@@ -115,7 +115,7 @@ echo PHP_EOL."Total Phone Number : ".count(explode(PHP_EOL, file_get_contents($f
 foreach(explode(PHP_EOL, file_get_contents($file)) as $a => $phone)
 {
 	$email = $modules->random_nama()['email'];
-	$pecah = explode("|", $pone);
+	$pecah = explode("|", $phone);
 	$countryCode = $pecah[0];
 	$phone = $pecah[1];
 	$generateOtp = $oyo->generateOTP($phone, $countryCode);
