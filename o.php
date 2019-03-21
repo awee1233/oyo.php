@@ -112,7 +112,7 @@ $file = trim(fgets(STDIN));
 
 echo PHP_EOL."Total Phone Number : ".count(explode(PHP_EOL, file_get_contents($file)))." Biji ^_^ ".PHP_EOL;
 
-foreach(explode(PHP_EOL, file_get_contents($file)) as $a => $pone)
+foreach(explode(PHP_EOL, file_get_contents($file)) as $a => $phone)
 {
 	$email = $modules->random_nama()['email'];
 	$pecah = explode("|", $pone);
