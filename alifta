@@ -9,18 +9,18 @@ function generateRandomString($length = 10) {
     }
     return $randomString;
 }
- 
-echo 'Enter Phone Number : ';
-$phone_number = trim(fgets(STDIN));
- 
+
+echo 'Enter Phone Number : '; 
+$phone_number = trim(fgets(STDIN)); 
+
 $ch = curl_init();
- 
+
 curl_setopt($ch, CURLOPT_URL, 'https://api.oyorooms.com/v2/users/generate_otp?phone='.$phone_number.'&nod=4&intent=login&sms_auto_retrieval=true&country_code=%2B1&version=20205&partner_app_version=20205&android_id='.generateRandomString(16).'&idfa=&sid=1551940465205');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
- 
+
 curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
- 
+
 $headers = array();
 $headers[] = 'Access_token: QmpDZlRxZWo2UkZ5M3pSeHZ5NW46bi13NHN0ZTV5V1I1aGpCUVVHOUM=';
 $headers[] = 'Authorization: Basic QmpDZlRxZWo2UkZ5M3pSeHZ5NW46bi13NHN0ZTV5V1I1aGpCUVVHOUM=';
@@ -30,48 +30,45 @@ $headers[] = 'Content-Type: application/json';
 $headers[] = 'User-Agent: Dalvik/2.1.0 (Linux; U; Android 8.1.0; SM-G610F Build/M1AJQ)';
 $headers[] = 'Host: api.oyorooms.com';
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
- 
+
 $result = curl_exec($ch);
 if (curl_errno($ch)) {
     echo 'Error:' . curl_error($ch);
 }
 curl_close ($ch);
- 
+
 $json = json_decode($result);
 if($json->is_user_present == 1){
-    echo "Nomor sudah terdaftar";
-    die();
+	echo "Nomor sudah terdaftar";
+	die();
 }
- 
-echo 'Enter OTP : ';
-$otp = trim(fgets(STDIN));
- 
-echo 'Enter Referral Code : ';
-$referral = trim(fgets(STDIN));
- 
+
+echo 'Enter OTP : '; 
+$otp = trim(fgets(STDIN)); 
+
 $ch = curl_init();
- 
+
 curl_setopt($ch, CURLOPT_URL, 'https://api.oyorooms.com/v2/users/new_sign_up?additional_fields=ab_service_data&handset=samsung%2C%20SM-G610F&version=20205&partner_app_version=20205&android_id='.generateRandomString(16).'&idfa=&sid=1551940465205');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS, '{
-    "truecaller": false,
-    "code": "'.$otp.'",
-    "country_code": "+1",
-    "device_id": "'.generateRandomString(16).'",
-    "device_type": "android",
-    "email": "'.generateRandomString(10).'@gmail.com",
-    "id": 0,
-    "idfa": "",
-    "name": "'.generateRandomString(10).'",
-    "phone": "'.$phone_number.'",
-    "push_type": "gcm",
-    "referral_code": "'.$referral.'",
-    "token": "c-PeIXwYYwg:APA91bHHQLHnS0FvSIOYJpN-hBJXYHxc1xQh8FrMZaQawBVPVyXxk77vTz7LWC4rtApBrZb3p4pOwJRD2JBMq0u3sChUgpasQFGcN_HNAGCscrcREwL-trFIBX3votCcFY1bn7eBmuCd",
-    "updated_at": 0
+	"truecaller": false,
+	"code": "'.$otp.'",
+	"country_code": "+62",
+	"device_id": "'.generateRandomString(16).'",
+	"device_type": "android",
+	"email": "'.generateRandomString(10).'@gmail.com",
+	"id": 0,
+	"idfa": "",
+	"name": "'.generateRandomString(10).'",
+	"phone": "'.$phone_number.'",
+	"push_type": "gcm",
+	"referral_code": "ALIFDGKU5",
+	"token": "c-PeIXwYYwg:APA91bHHQLHnS0FvSIOYJpN-hBJXYHxc1xQh8FrMZaQawBVPVyXxk77vTz7LWC4rtApBrZb3p4pOwJRD2JBMq0u3sChUgpasQFGcN_HNAGCscrcREwL-trFIBX3votCcFY1bn7eBmuCd",
+	"updated_at": 0
 }');
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
- 
+
 $headers = array();
 $headers[] = 'Access_token: QmpDZlRxZWo2UkZ5M3pSeHZ5NW46bi13NHN0ZTV5V1I1aGpCUVVHOUM=';
 $headers[] = 'Authorization: Basic QmpDZlRxZWo2UkZ5M3pSeHZ5NW46bi13NHN0ZTV5V1I1aGpCUVVHOUM=';
@@ -81,18 +78,18 @@ $headers[] = 'Content-Type: application/json; charset=utf-8';
 $headers[] = 'User-Agent: Dalvik/2.1.0 (Linux; U; Android 8.1.0; SM-G610F Build/M1AJQ)';
 $headers[] = 'Host: api.oyorooms.com';
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
- 
+
 $result = curl_exec($ch);
 if (curl_errno($ch)) {
     echo 'Error:' . curl_error($ch);
 }
 curl_close ($ch);
- 
+
 $json = json_decode($result);
- 
+
 if($json->success == 0){
-    echo $json->error->message;
-    die();
+	echo $json->error->message;
+	die();
 }
- 
+
 echo $json->phone." Berhasil mendaftar OYO";
