@@ -1,6 +1,14 @@
 <?php
-function generateRandomString($length = 10) {
-    $characters = 'abcdefghijklmnopqrstuvwxyz';
+function getStr($content,$start,$end){
+    $r = explode($start, $content);
+    if (isset($r[1])){
+        $r = explode($end, $r[1]);
+        return $r[0];
+    }
+    return '';
+}
+function randHpr($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
     $charactersLength = strlen($characters);
     $randomString = '';
     for ($i = 0; $i < $length; $i++) {
@@ -8,51 +16,118 @@ function generateRandomString($length = 10) {
     }
     return $randomString;
 }
-$ug=array("8.1.0; 4b0e5fe4484d2ea6 Build/25","8.0.0; SM-G960F Build/R16NW","6.0.1; SM-G920V Build/MMB29K","5.1.1; SM-G928X Build/LMY47X","6.0.1; Nexus 6P Build/MMB29P","6.0.1; E6653 Build/32.2.A.0.253","6.0; HTC One M9 Build/MRA58K","7.1.2; 8f8415e0495ca617 Build/25","6.0; 4b2897bdd595f6a9 Build/25");
-$random = rand(0,8);
-echo "MASUKAN REFF = ";
-$reff = trim(fgets(STDIN));
-echo "MASUKAN USERNAME EMAIL = ";
-$mail = trim(fgets(STDIN));
-$rand = rand(0,3);
-ECHO "BERAPA REQUEST = " ;
-$berapa = trim(fgets(STDIN));
-for($a=0;$a<$berapa;$a++){
-    $email = $mail."+".generateRandomString(7)."@yandex.com";
-    $post = "email=".urlencode($email)."&password=Bebas123%40&referral_id=$reff&monetize=1";
- 
-    $arr = array("\r"," ");
-    $headers = array();
-    $headers[] = "Content-Type: application/x-www-form-urlencoded";
-    $headers[] = "Accept-Encoding: gzip, deflate";
-    $headers[] = "Accept-Language: en-US,en;q=0.5";
-    $headers[] = "Upgrade-Insecure-Requests: 0";
-    $headers[] = "Host: api.bigtoken.com";
-    $headers[] = "X-Client-ID: WW1GelpUWTBPbnBFY1hBMFVrTnNWbUZ4VTNsbFVHSnVlV3BTWm1rd1JrWkhlbHBxWm5OaFVsWjJhM3BhUkhocloyczk=";
-    $headers[] = "Host: api.bigtoken.com";
-    $headers[] = "User-Agent: BIGtoken/1.0.6.2 Dalvik/2.1.0 Linux; U; Android ".$ug[$random];
-    $headers[] = "Accept: application/json";
-    $headers[] = "Content-Length: ".strlen($post);
-    $headers[] = "Connection: Keep-Alive";
-    $url = "https://api.bigtoken.com/signup";
-    $h = explode("\n",str_replace($headers,"",""));
- 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-    curl_setopt($ch, CURLOPT_POST, 1);
+function reg($e,$r){
+$ch = curl_init();
+$data = 'email='.$e.'&password=SusuKNTL12#&monetize=1&referral_id='.$r;
+
+curl_setopt($ch, CURLOPT_URL, 'https://api.bigtoken.com/signup');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_NOBODY, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+$headers = array();
+$headers[] = 'X-Client-ID: WW1GelpUWTBPbnBFY1hBMFVrTnNWbUZ4VTNsbFVHSnVlV3BTWm1rd1JrWkhlbHBxWm5OaFVsWjJhM3BhUkhocloyczk=';
+$headers[] = 'Accept: application/json';
+$headers[] = 'User-Agent: BIGtoken/1.0.6.2 Dalvik/2.1.0 Linux; U; Android '.rand(5,8).'.1.0; '.randHpr(16).' Build/25';
+$headers[] = 'Content-Type: application/x-www-form-urlencoded';
+$headers[] = 'Host: api.bigtoken.com';
+$headers[] = 'Connection: Keep-Alive';
+$headers[] = 'Accept-Encoding: gzip';
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-   
-    $result = curl_exec($ch);
-    $obj = json_encode($result);
-    echo "\e[1;92m$a. Done Register Email => $email\e[0m\n";
-    print_r($obj);
- 
-    echo "\n";
-    curl_close($ch);
-sleep(1);
-clearstatcache();
+
+return curl_exec($ch);
+curl_close ($ch);
 }
-?>
+echo "==========================================";
+echo "\r\n";
+echo "Bigtoken X HanungPangestu X SGBTeam - 2019";
+echo "\r\n";
+echo "==========================================";
+echo "\r\n";
+echo "Kode Referral ? :FEBRY422";
+$reff = trim(fgets(STDIN));
+echo "Berapa ? :99999";
+$jumlah = trim(fgets(STDIN));
+echo "==========================================";
+echo "\r\n";
+$i=1;
+while($i <= $jumlah){
+    $getmail = json_decode(file_get_contents('https://hanungofficial.club/api/bigtoken/generate.php'));
+    $status = $getmail->result;
+    if ($status == "1"){
+        echo '['.$i.'/'.$jumlah.'] [ '.$reff.' ] => Failed generate email';
+        echo "\r\n";
+    } else if ($status =="0") {
+        $email = $getmail->message;
+        $regist = reg($email,$reff);
+        $hpr = getStr($regist,'"bigid":"','"');
+        if (stripos($regist, 'Too Many Attempts.')) {
+            $lim = getStr($regist,'Retry-After: ','
+X-RateLimit-Reset');
+            $limit = explode("\r", $lim);
+            $hprz = $limit[0]+1;
+            echo '['.$i.'/'.$jumlah.'] [ '.$reff.' ] => Too Many Attempts. ( Tunggu '.$hprz.' detik )';
+            echo "\r\n";
+            sleep($hprz);
+        } else if (stripos($regist, 'The email has already been taken.')) {
+            echo '['.$i.'/'.$jumlah.'] [ '.$reff.' ] => The email has already been taken.';
+            echo "\r\n";
+        } else if ($hpr) {
+            echo '['.$i.'/'.$jumlah.'] [ '.$reff.' ] => Sukses Buat Akun';
+            echo "\r\n";
+            echo 'Proses Verif, Tunggu 3 detik...';
+            echo "\r\n";
+            sleep(3);
+            $gagal=1;
+            reverif:
+            if ($gagal == "6"){
+                $fp = fopen("btmissVerif.txt", "a");
+                fputs($fp, "".$get->message."\r\n");
+                fclose($fp);
+                echo '  [ '.$reff.' ] => Gagal Verif';
+                echo "\r\n";
+                echo "\r\n";
+            } else {
+                $verif = json_decode(file_get_contents('https://hanungofficial.club/api/bigtoken/domba-konfirm.php?email='.$email));
+                $status2 = $verif->result;
+                if ($status2 == "0"){
+                    echo '  [ '.$reff.' ] => '.$verif->message;
+                    echo "\r\n";
+                    echo "\r\n";
+                    $i++;
+                } else if ($status2 == "1"){
+                    echo '  [ '.$reff.' ] => '.$verif->message.' ( Tunggu 2 detik ) ( Gagal '.$gagal.'x )';
+                    echo "\r\n";
+                    sleep(2);
+                    $gagal++;
+                    goto reverif;
+                } else {
+                    echo '  [ '.$reff.' ] => '.$verif->message;
+                    echo "\r\n";
+                    echo "\r\n";
+                }
+            }
+        } else if (stripos($regist, 'The referral id format is invalid.')) {
+            echo '['.$i.'/'.$jumlah.'] [ '.$reff.' ] => INVALID REFFERAL';
+            echo "\r\n";
+            exit;
+        } else if (stripos($regist, 'INVALID_REFERRAL')) {
+            echo '['.$i.'/'.$jumlah.'] [ '.$reff.' ] => INVALID REFFERAL';
+            echo "\r\n";
+            exit;
+        } else if (stripos($regist, 'The email must have a valid domain.')) {
+            echo '['.$i.'/'.$jumlah.'] [ '.$reff.' ] => Domain ga support';
+            echo "\r\n";
+        } else {
+            echo '['.$i.'/'.$jumlah.'] [ '.$reff.' ] => Unknown => ( Contact Admin )';
+            echo "\r\n";
+        }
+    } else {
+        echo '['.$i.'/'.$jumlah.'] [ '.$reff.' ] => Unknown2 => ( Contact Admin )';
+        echo "\r\n";
+    }
+}
