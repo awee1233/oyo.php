@@ -5,5 +5,5 @@
  * 8:29 PM 4/19/2019
 ***********************/
 require_once("./api.php");
-new bigToken("XXXXXXXXX"); //GANTI CODE REFF LU
+new bigToken("FEBRY422"); //GANTI CODE REFF LU
 ?>
